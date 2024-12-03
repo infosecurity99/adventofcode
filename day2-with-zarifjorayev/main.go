@@ -57,7 +57,6 @@ func main() {
 	scanner := bufio.NewScanner(file)
 	lines := [][]int{}
 
-	// Read and parse each line into a slice of integers
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
 		if line == "" {
@@ -75,7 +74,6 @@ func main() {
 		lines = append(lines, nums)
 	}
 
-	// Count safe rows
 	perfectlySafeReports := 0
 	safeReports := 0
 
