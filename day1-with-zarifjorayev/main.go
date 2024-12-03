@@ -11,6 +11,83 @@ import (
 )
 
 func main() {
+	fileName := "input.txt"
+
+	file, err := os.Open(fileName)
+	if err != nil {
+		fmt.Println("Faylni ochishda xato:", err)
+		return
+	}
+	defer file.Close()
+
+	var data [][]int
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		nums := []int{}
+		for _, str := range strings.Fields(line) {
+			num, _ := strconv.Atoi(str)
+			nums = append(nums, num)
+		}
+		data = append(data, nums)
+	}
+	if err := scanner.Err(); err != nil {
+		fmt.Println("Faylni o'qishda xato:", err)
+		return
+	}
+
+	if len(data) == 0 || len(data[0]) < 2 {
+		fmt.Println("Faylda noto'g'ri yoki yetarli ma'lumot yo'q")
+		return
+	}
+
+	rows := len(data)
+	cols := len(data[0])
+	columns := make([][]int, cols)
+	for i := 0; i < cols; i++ {
+		columns[i] = make([]int, rows)
+		for j := 0; j < rows; j++ {
+			columns[i][j] = data[j][i]
+		}
+	}
+
+	for _, col := range columns {
+		sort.Ints(col)
+	}
+
+	absDiffSum := 0
+	for i := 0; i < len(columns[0]); i++ {
+		absDiffSum += int(math.Abs(float64(columns[0][i] - columns[1][i])))
+	}
+	fmt.Println(":", absDiffSum)
+
+	left, right := columns[0], columns[1]
+	result := 0
+	for _, x := range left {
+		count := 0
+		for _, y := range right {
+			if x == y {
+				count++
+			}
+		}
+		result += x * count
+	}
+	fmt.Println("sum:", result)
+}
+
+/*package main
+
+import (
+	"bufio"
+	"fmt"
+	"math"
+	"os"
+	"sort"
+	"strconv"
+	"strings"
+)
+
+func main() {
 	file, err := os.Open("input.txt")
 	if err != nil {
 		panic(err)
@@ -61,3 +138,4 @@ func transpose(matrix [][]int) [][]int {
 	}
 	return result
 }
+*/

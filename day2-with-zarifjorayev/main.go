@@ -9,7 +9,6 @@ import (
 	"strings"
 )
 
-// isRowLegal checks if a row (sequence) satisfies the rules
 func isRowLegal(nums []int) bool {
 	diffs := make([]int, len(nums)-1)
 	for i := 0; i < len(nums)-1; i++ {
@@ -37,7 +36,6 @@ func isRowLegal(nums []int) bool {
 	return isIncreasing || isDecreasing
 }
 
-// part2 checks if removing one element from nums makes it legal
 func part2(nums []int) bool {
 	for i := 0; i < len(nums); i++ {
 		copyNums := append([]int{}, nums[:i]...)
@@ -50,7 +48,6 @@ func part2(nums []int) bool {
 }
 
 func main() {
-	// Open the input file
 	file, err := os.Open("input2.txt")
 	if err != nil {
 		panic(err)
