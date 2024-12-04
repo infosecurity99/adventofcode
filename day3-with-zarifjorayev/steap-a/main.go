@@ -34,5 +34,5 @@ func main() {
 		total += x * y
 	}
 
-	fmt.Println("The sum of the results of all valid multiplications is:", total)
+	fmt.Println(" is:", total)
 }

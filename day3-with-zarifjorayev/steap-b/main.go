@@ -41,5 +41,5 @@ func main() {
 		}
 	}
 
-	fmt.Println("The sum of the results of all enabled multiplications is:", total)
+	fmt.Println(" is:", total)
 }

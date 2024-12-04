@@ -15,7 +15,7 @@ func main() {
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		fmt.Println("Faylni ochishda xato:", err)
+		fmt.Println("xato:", err)
 		return
 	}
 	defer file.Close()
@@ -32,12 +32,12 @@ func main() {
 		data = append(data, nums)
 	}
 	if err := scanner.Err(); err != nil {
-		fmt.Println("Faylni o'qishda xato:", err)
+		fmt.Println(" xato:", err)
 		return
 	}
 
 	if len(data) == 0 || len(data[0]) < 2 {
-		fmt.Println("Faylda noto'g'ri yoki yetarli ma'lumot yo'q")
+		fmt.Println("no data")
 		return
 	}
 
