@@ -6,41 +6,17 @@ import (
 	"os"
 )
 
-// Function to check if the X-MAS pattern exists in the grid at a specific position
-func checkPattern(grid [][]rune, i, j, n, m int) bool {
-	// Check for the X-MAS pattern in four diagonal directions
-	return ((i-1 >= 0 && j-1 >= 0 && grid[i-1][j-1] == 'M' && grid[i][j] == 'S' && grid[i+1][j+1] == 'M') || // top-left to bottom-right
-		(i-1 >= 0 && j+1 < m && grid[i-1][j+1] == 'M' && grid[i][j] == 'S' && grid[i+1][j-1] == 'M')) // top-right to bottom-left
-}
-
-func countXmasPatterns(grid [][]rune) int {
-	// Get grid dimensions
-	n, m := len(grid), len(grid[0])
-	count := 0
-
-	// Loop through the grid to find "M" positions that can be the center of an X-MAS
-	for i := 1; i < n-1; i++ {
-		for j := 1; j < m-1; j++ {
-			if grid[i][j] == 'S' && checkPattern(grid, i, j, n, m) {
-				count++
-			}
-		}
-	}
-	return count
-}
-
-func readGridFromFile(filename string) ([][]rune, error) {
+func readGridFromFile(filename string) ([]string, error) {
+	var grid []string
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
 
-	var grid [][]rune
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		line := scanner.Text()
-		grid = append(grid, []rune(line))
+		grid = append(grid, scanner.Text())
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -51,19 +27,65 @@ func readGridFromFile(filename string) ([][]rune, error) {
 }
 
 func main() {
-	// Change this to the correct file path for your input file
-	filename := "input.txt"
+	filename := "grid.txt"
 
-	// Read the grid from the file
 	grid, err := readGridFromFile(filename)
 	if err != nil {
-		fmt.Println("Error reading the file:", err)
+		fmt.Println("Error reading from file:", err)
 		return
 	}
 
-	// Count the X-MAS patterns
-	result := countXmasPatterns(grid)
+	count := 0
 
-	// Print the result
-	fmt.Printf("The number of X-MAS patterns is: %d\n", result)
+	for r := 0; r < len(grid); r++ {
+		for c := 0; c < len(grid[0]); c++ {
+			if string(grid[r][c]) != "X" {
+				continue
+			}
+
+			for _, dr := range []int{-1, 0, 1} {
+				for _, dc := range []int{-1, 0, 1} {
+					if dr == 0 && dc == 0 {
+						continue
+					}
+					if r+3*dr < 0 || r+3*dr >= len(grid) || c+3*dc < 0 || c+3*dc >= len(grid[0]) {
+						continue
+					}
+
+					if string(grid[r+dr][c+dc]) == "M" &&
+						string(grid[r+2*dr][c+2*dc]) == "A" &&
+						string(grid[r+3*dr][c+3*dc]) == "S" {
+						count++
+					}
+				}
+			}
+		}
+	}
+
+	for r := 1; r < len(grid)-1; r++ {
+		for c := 1; c < len(grid[0])-1; c++ {
+			if string(grid[r][c]) != "A" {
+				continue
+			}
+
+			corners := []string{
+				string(grid[r-1][c-1]),
+				string(grid[r-1][c+1]),
+				string(grid[r+1][c+1]),
+				string(grid[r+1][c-1]),
+			}
+
+			if corners[0] == "M" && corners[1] == "M" && corners[2] == "S" && corners[3] == "S" {
+				count++
+			} else if corners[0] == "M" && corners[1] == "S" && corners[2] == "S" && corners[3] == "M" {
+				count++
+			} else if corners[0] == "S" && corners[1] == "S" && corners[2] == "M" && corners[3] == "M" {
+				count++
+			} else if corners[0] == "S" && corners[1] == "M" && corners[2] == "M" && corners[3] == "S" {
+				count++
+			}
+		}
+	}
+
+	fmt.Println(count)
 }
