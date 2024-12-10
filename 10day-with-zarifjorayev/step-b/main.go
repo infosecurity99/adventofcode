@@ -32,7 +32,6 @@ func isValid(x, y, rows, cols int) bool {
 	return x >= 0 && x < rows && y >= 0 && y < cols
 }
 
-// Dinamik dasturlash uchun yordamchi funksiya
 func countDistinctTrails(topoMap [][]int, x, y int, memo [][]int) int {
 	rows := len(topoMap)
 	cols := len(topoMap[0])
@@ -51,7 +50,6 @@ func countDistinctTrails(topoMap [][]int, x, y int, memo [][]int) int {
 		}
 	}
 
-	// Agar 9 balandlikka yetgan bo'lsa, distinct yo‘lni birga qo‘shamiz
 	if topoMap[x][y] == 9 {
 		trailCount++
 	}
@@ -61,14 +59,12 @@ func countDistinctTrails(topoMap [][]int, x, y int, memo [][]int) int {
 }
 
 func main() {
-	// Xarita ma'lumotlarini o'qiymiz
 	topoMap := readMap("input.txt")
 
 	rows := len(topoMap)
 	cols := len(topoMap[0])
 	totalRating := 0
 
-	// Memoization massivini yaratamiz
 	memo := make([][]int, rows)
 	for i := range memo {
 		memo[i] = make([]int, cols)
@@ -77,7 +73,6 @@ func main() {
 		}
 	}
 
-	// Trailheadlarni topib, ularning reytingini hisoblaymiz
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
 			if topoMap[i][j] == 0 {
@@ -86,5 +81,5 @@ func main() {
 		}
 	}
 
-	fmt.Printf("Trailheadlarning umumiy reytingi: %d\n", totalRating)
+	fmt.Printf(": %d\n", totalRating)
 }
