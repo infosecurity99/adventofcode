@@ -52,21 +52,19 @@ func main() {
 	// Ensure all rows are the same length
 	for i, row := range grid {
 		if len(row) != C {
-			log.Fatalf("Inconsistent row length at row %d: expected %d, got %d", i, C, len(row))
+			log.Fatalf(" %d: expected %d, got %d", i, C, len(row))
 		}
 	}
 
 	seen := make(map[[2]int]bool)
 	p1, p2 := 0, 0
 
-	// Step 2: Process the grid
 	for r := 0; r < R; r++ {
 		for c := 0; c < C; c++ {
 			if seen[[2]int{r, c}] {
 				continue
 			}
 
-			// Flood fill
 			Q := list.New()
 			Q.PushBack([2]int{r, c})
 			area, perim := 0, 0
@@ -98,7 +96,6 @@ func main() {
 				}
 			}
 
-			// Calculate sides
 			sides := 0
 			for _, positions := range perimMap {
 				seenPerim := make(map[[2]int]bool)
@@ -134,7 +131,6 @@ func main() {
 		}
 	}
 
-	// Step 3: Output results
 	fmt.Printf("p1: %d\n", p1)
 	fmt.Printf("p2: %d\n", p2)
 }
